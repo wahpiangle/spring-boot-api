@@ -1,8 +1,24 @@
 package com.example.demo.student;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+//sequenceGenerator specifies how primary keys should be generated
+//generatedValue specifies the primary key generation strategy
+
+@Entity //Entity annotation is used to map the class to a table in the database
+@Table //Table annotation is used to specify the details of the table that will be used to persist the entity in the database
 public class Student {
+    @Id //ID annotation is used to specify the primary key of an entity
+    @SequenceGenerator(
+            name = "student_sequence",
+            sequenceName = "student_sequence",
+            allocationSize = 1 //increment by 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "student_sequence"
+    )
     private Long id;
     private String name;
     private String email;
