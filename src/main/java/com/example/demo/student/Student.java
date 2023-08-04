@@ -3,12 +3,14 @@ package com.example.demo.student;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.Period;
 //sequenceGenerator specifies how primary keys should be generated
 //generatedValue specifies the primary key generation strategy
 
 @Entity //Entity annotation is used to map the class to a table in the database
 @Table //Table annotation is used to specify the details of the table that will be used to persist the entity in the database
 public class Student {
+
     @Id //ID annotation is used to specify the primary key of an entity
     @SequenceGenerator(
             name = "student_sequence",
@@ -23,24 +25,23 @@ public class Student {
     private String name;
     private String email;
     private LocalDate dob;
+    @Transient //transient properties are not persisted, used for derived fields
     private Integer age;
 
     public Student() {
     }
 
-    public Student(Long id, String name, String email, LocalDate dob, Integer age) {
+    public Student(Long id, String name, String email, LocalDate dob) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.dob = dob;
-        this.age = age;
     }
 
-    public Student(String name, String email, LocalDate dob, Integer age) {
+    public Student(String name, String email, LocalDate dob) {
         this.name = name;
         this.email = email;
         this.dob = dob;
-        this.age = age;
     }
 
     public Long getId() {
@@ -76,7 +77,7 @@ public class Student {
     }
 
     public Integer getAge() {
-        return age;
+        return Period.between(this.dob, LocalDate.now()).getYears();
     }
 
     public void setAge(Integer age) {
